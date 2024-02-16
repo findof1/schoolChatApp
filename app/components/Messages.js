@@ -35,7 +35,7 @@ const Messages = ({ chat }) => {
         onlyOnce: false,
       }
     );
-  }, [setMsgs]);
+  }, [setMsgs, chat]);
 
   const deleteMessage = (msgId) => {
     const messageRef = ref(rl, `messages/${chat}/${msgId}`);
