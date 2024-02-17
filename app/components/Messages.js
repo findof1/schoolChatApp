@@ -35,7 +35,7 @@ const Messages = ({ chat, path = "messages" }) => {
         onlyOnce: false,
       }
     );
-  }, [setMsgs, chat]);
+  }, [setMsgs, chat, path]);
 
   const deleteMessage = (msgId) => {
     const messageRef = ref(rl, `${path}/${chat}/${msgId}`);
