@@ -9,7 +9,7 @@ import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 
-const Messages = ({ chat }) => {
+const Messages = ({ chat, path = "messages" }) => {
   const { user } = useUser();
   const [msgs, setMsgs] = useState([]);
   const [reply, setReply] = useState(null);
@@ -18,7 +18,7 @@ const Messages = ({ chat }) => {
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
-    const messagesRef = ref(rl, `messages/${chat}`);
+    const messagesRef = ref(rl, `${path}/${chat}`);
     onValue(
       messagesRef,
       (snapshot) => {
@@ -38,12 +38,12 @@ const Messages = ({ chat }) => {
   }, [setMsgs, chat]);
 
   const deleteMessage = (msgId) => {
-    const messageRef = ref(rl, `messages/${chat}/${msgId}`);
+    const messageRef = ref(rl, `${path}/${chat}/${msgId}`);
     remove(messageRef);
   };
 
   const confirmEdit = () => {
-    const messageRef = ref(rl, `messages/${chat}/${edit.msgId}`);
+    const messageRef = ref(rl, `${path}/${chat}/${edit.msgId}`);
     update(messageRef, { text: editMsg });
 
     setEdit(null);
@@ -52,7 +52,7 @@ const Messages = ({ chat }) => {
 
   function sendMessage() {
     if (msg) {
-      push(ref(rl, `messages/${chat}`), {
+      push(ref(rl, `${path}/${chat}`), {
         name: user.fullName,
         id: user.id,
         email: user.emailAddresses[0].emailAddress,

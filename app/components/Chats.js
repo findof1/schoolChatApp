@@ -1,0 +1,60 @@
+"use client";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import React, { useEffect, useState, useCallback } from "react";
+import { db } from "../firebase-config";
+import { useUser } from "@clerk/clerk-react";
+import Button from "./Button";
+
+const Chats = () => {
+  const { user } = useUser();
+  const [chats, setChats] = useState([]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      if (user) {
+        const q = query(
+          collection(db, "chats"),
+          where("users", "array-contains", user.emailAddresses[0].emailAddress)
+        );
+        const reqSnapshot = await getDocs(q);
+        const newChats = reqSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setChats(newChats);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    setChats([]);
+    fetchData();
+  }, [fetchData]);
+
+  return (
+    <div className="w-[45%] ml-[2.5%] h-full flex flex-col items-center">
+      <h1 className="text-4xl underline">Chat Rooms</h1>
+      <div className="mt-5 w-full h-full bg-gray-950 border-4 border-gray-800 overflow-auto flex flex-col items-center p-3">
+        {chats.map((chat, index) => (
+          <div
+            key={index}
+            className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row items-center"
+          >
+            <p className="text-2xl">Chat: {chat.name}</p>
+            <Button
+              style="submit"
+              extraStyles="min-h-10 h-10 text-lg p-0 ml-auto mr-4"
+              route={`/directChat/chat/${chat.id}?${chat.name}`}
+            >
+              Join Chat
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Chats;
