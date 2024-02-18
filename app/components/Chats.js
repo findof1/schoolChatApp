@@ -46,7 +46,7 @@ const Chats = () => {
             <Button
               style="submit"
               extraStyles="min-h-10 h-10 text-lg p-0 ml-auto mr-4"
-              route={`/directChat/chat/${chat.id}?${chat.name}`}
+              route={`/directChat/chat/${chat.id}?name=${chat.name}`}
             >
               Join Chat
             </Button>

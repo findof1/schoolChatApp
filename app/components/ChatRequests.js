@@ -7,6 +7,8 @@ import {
   where,
   deleteDoc,
   doc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 import React, { useEffect, useState, useCallback } from "react";
 import { db } from "../firebase-config";
@@ -40,10 +42,17 @@ const ChatRequests = () => {
     try {
       await deleteDoc(doc(db, "requests", req.id));
 
+      if(!req.created){
       await addDoc(collection(db, "chats"), {
         name: req.name,
         users: [req.senderEmail, req.user],
       });
+    }else{
+      const chatRef = doc(db, "chats", req.chatId); 
+      await updateDoc(chatRef, {
+        users: arrayUnion(req.user),
+      });
+    }
 
       setChatReqs((prev) => prev.filter((r) => r.id !== req.id));
     } catch (error) {
@@ -73,8 +82,8 @@ const ChatRequests = () => {
             key={index}
             className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row fade-in-1"
           >
-            { req.created ? <p>
-              {req.senderName} sent you a request to join a chat room called {req.name} with {req.usernames.map((name, index)=>(<p key={index}>{name}</p>))}
+            { req.created ? <p className="text-sm">
+              {req.senderName} sent you a request to join a chat room called {req.name} with 1 or more users.
             </p> : <p>
               {req.senderName} sent you a request to create a chat room called {req.name}
             </p>}
