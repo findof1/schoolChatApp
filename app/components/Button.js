@@ -19,7 +19,7 @@ const Button = ({style = 'default', extraStyles = '', route = '', type = 'button
     style = 'border-[3px] border-black bg-gray-800 rounded-lg min-w-8 w-8 text-white hover:bg-gray-600 hover:border-gray-800 transition-all hover:scale-110 min-h-8 h-8 p-1 pr-2 pl-2 text-md'
   }
   if(style == 'sm'){
-    style = 'border-[3px] border-black bg-gray-800 rounded-full min-w-20 text-white hover:bg-gray-600 hover:border-gray-800 transition-all hover:scale-110 min-h-10 h-12 p-1 pr-2 pl-2 text-md'
+    style = 'border-[3px] border-black bg-gray-800 rounded-full min-w-20 text-white hover:bg-gray-600 hover:border-gray-800 transition-all hover:scale-110 min-h-10 h-10 lg:h-12 p-1 pr-2 pl-2 text-xs sm:text-xs md:text-sm lg:text-md'
   }
   if(style == 'md'){
     style = 'border-4 border-black bg-gray-800 rounded-full min-w-24 text-white hover:bg-gray-600 hover:border-gray-800 transition-all hover:scale-110 min-h-5 p-2 pr-3 pl-3 text-2xl'

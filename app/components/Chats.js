@@ -35,12 +35,12 @@ const Chats = () => {
 
   return (
     <div className="w-[45%] ml-[2.5%] h-full flex flex-col items-center">
-      <h1 className="text-4xl underline">Chat Rooms</h1>
-      <div className="mt-5 w-full h-full bg-gray-950 border-4 border-gray-800 overflow-auto flex flex-col items-center p-3">
+      <h1 className="text-sm sm:text-lg md:text-2xl lg:text-4xl underline fade-in-2">Chat Rooms</h1>
+      <div className="mt-5 w-full h-full bg-gray-950 border-4 border-gray-800 overflow-auto flex flex-col items-center p-3 fade-in-3">
         {chats.map((chat, index) => (
           <div
             key={index}
-            className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row items-center"
+            className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row items-center fade-in-1"
           >
             <p className="text-2xl">Chat: {chat.name}</p>
             <Button

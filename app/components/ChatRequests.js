@@ -28,9 +28,11 @@ const ChatRequests = () => {
         where("user", "==", user.emailAddresses[0].emailAddress)
       );
       const reqSnapshot = await getDocs(q);
-      reqSnapshot.forEach((doc) => {
-        setChatReqs((prev) => [...prev, { ...doc.data(), id: doc.id }]);
-      });
+      const newChatReqs = reqSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setChatReqs(newChatReqs);
     }
   }, [user]);
 
@@ -64,17 +66,18 @@ const ChatRequests = () => {
 
   return (
     <div className="w-[45%] ml-[5%] h-full flex flex-col items-center">
-      <h1 className="text-4xl underline">Chat Requests</h1>
-      <div className="mt-5 w-full h-full bg-gray-950 border-4 border-gray-800 overflow-auto flex flex-col items-center p-3">
+      <h1 className="text-sm sm:text-lg md:text-2xl lg:text-4xl underline fade-in-2">Chat Requests</h1>
+      <div className="mt-5 w-full h-full bg-gray-950 border-4 border-gray-800 overflow-auto flex flex-col items-center p-3 fade-in-3">
         {chatReqs.map((req, index) => (
           <div
             key={index}
-            className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row"
+            className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row fade-in-1"
           >
-            <p>
-              {req.senderName} sent you a request to join a chat room called,{" "}
-              {req.name}
-            </p>{" "}
+            { req.created ? <p>
+              {req.senderName} sent you a request to join a chat room called {req.name} with {req.usernames.map((name, index)=>(<p key={index}>{name}</p>))}
+            </p> : <p>
+              {req.senderName} sent you a request to create a chat room called {req.name}
+            </p>}
             <Button
               onClick={() => {
                 accept(req);

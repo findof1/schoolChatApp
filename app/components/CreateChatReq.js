@@ -25,6 +25,7 @@ const CreateChatReq = () => {
             user: email,
             senderName: user.fullName,
             senderEmail: user.emailAddresses[0].emailAddress,
+            created: false
           });
           router.push("/directChat");
         } else {
