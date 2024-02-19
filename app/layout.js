@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider appearance={dark}>
       <html lang="en">
-        <body className={`${inter.className} h-screen w-screen bg-gradient-to-r from-gray-950 to-gray-900`}>{children}</body>
+        <body className={`${inter.className} h-[95vh] w-full bg-gradient-to-r from-gray-950 to-gray-900`}>{children}</body>
       </html>
     </ClerkProvider>
   );

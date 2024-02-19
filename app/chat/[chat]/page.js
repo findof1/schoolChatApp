@@ -4,7 +4,7 @@ import NavbarAuth from "@/app/components/NavbarAuth";
 export default function Home({params}) {
 
   return (
-    <div className="flex flex-col h-screen w-screen items-center text-white">
+    <div className="flex flex-col h-full w-full items-center text-white">
       <NavbarAuth userdata={null}></NavbarAuth>
       <h1 className="text-4xl mt-8 fade-in-1 underline">Chatroom: {params.chat}</h1>
 

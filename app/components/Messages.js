@@ -8,6 +8,7 @@ import Link from "next/link";
 import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import Name from "./Name";
 
 const Messages = ({ chat, path = "messages" }) => {
   const { user } = useUser();
@@ -89,8 +90,9 @@ const Messages = ({ chat, path = "messages" }) => {
   }
 
   return (
-    <>
-      <div className="overflow-auto w-[80%] h-[55%] mt-[1%] bg-gray-950 border-8 border-gray-800 text-xl p-4">
+    <div className="flex flex-col w-[90%] h-full ml-[2.5%]">
+      <Name chatId={chat}/>
+      <div className="overflow-auto w-[95%] h-[80%] mt-[1%] bg-gray-950 border-8 border-gray-800 text-xl p-4">
         {msgs.map((message, index) => (
           <div
             key={index}
@@ -155,7 +157,7 @@ const Messages = ({ chat, path = "messages" }) => {
         ))}
       </div>
       {edit ? (
-        <div className="overflow-auto w-[80%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[95%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
           <p className="ml-4">
             Changing: {edit.name == user?.fullName ? 'You: ' : `${edit.name}: `}{edit.text}, to:
           </p>
@@ -195,7 +197,7 @@ const Messages = ({ chat, path = "messages" }) => {
         <></>
       )}
       {reply ? (
-        <div className="overflow-auto w-[80%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[95%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
           <p className="ml-4">Replying to: {reply.includes(user?.fullName) ? `You: ${reply.split(':')[1]}`: reply}</p>{" "}
           <Button
             style="none"
@@ -211,7 +213,7 @@ const Messages = ({ chat, path = "messages" }) => {
       ) : (
         <></>
       )}
-      <div className="overflow-auto w-[80%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl ">
+      <div className="overflow-auto w-[95%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl ">
         <div className="w-[85%] ml-[2%] flex flex-row items-center">
           <label>Send A Message: </label>
           <input
@@ -220,10 +222,11 @@ const Messages = ({ chat, path = "messages" }) => {
               setMsg(e.target.value);
               sessionStorage.setItem('msgState', e.target.value);
             }}
-            className="border-4 border-black bg-gray-800 min-w-[80%] text-white rounded-3xl min-h-5 p-2 pl-3 text-2xl ml-2"
+            className="border-4 border-black bg-gray-800 min-w-[80%] text-white rounded-3xl min-h-5 h-10 p-2 pl-3 text-2xl ml-2"
           ></input>
         </div>
         <Button
+        extraStyles='h-10 pt-0 pl-0 pr-0 hover:scale-100 text-md text-center items-center'
           onClick={() => {
             sendMessage();
             setMsg("");
@@ -233,7 +236,7 @@ const Messages = ({ chat, path = "messages" }) => {
           Send
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
