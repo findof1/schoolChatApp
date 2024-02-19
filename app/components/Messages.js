@@ -89,7 +89,7 @@ const Messages = ({ chat, path = "messages" }) => {
   }
 
   return (
-    <div className="w-full h-full fade-in-5">
+    <>
       <div className="overflow-auto w-[80%] h-[55%] mt-[1%] bg-gray-950 border-8 border-gray-800 text-xl p-4">
         {msgs.map((message, index) => (
           <div
@@ -233,7 +233,7 @@ const Messages = ({ chat, path = "messages" }) => {
           Send
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 
