@@ -155,7 +155,7 @@ const Messages = ({ chat, path = "messages" }) => {
         ))}
       </div>
       {edit ? (
-        <div className="overflow-auto w-[80%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[80%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl fade-in-5">
           <p className="ml-4">
             Changing: {edit.name == user?.fullName ? 'You: ' : `${edit.name}: `}{edit.text}, to:
           </p>
@@ -195,7 +195,7 @@ const Messages = ({ chat, path = "messages" }) => {
         <></>
       )}
       {reply ? (
-        <div className="overflow-auto w-[80%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[80%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl fade-in-5">
           <p className="ml-4">Replying to: {reply.includes(user?.fullName) ? `You: ${reply.split(':')[1]}`: reply}</p>{" "}
           <Button
             style="none"
