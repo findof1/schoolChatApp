@@ -129,7 +129,7 @@ const Messages = ({ chat, path = "messages" }) => {
       {edit ? (
         <div className="overflow-auto w-[80%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
           <p className="ml-4">
-            Changing: {edit.name == user.fullName ? 'You: ' : edit.name}: {edit.text}, to:
+            Changing: {edit.name == user.fullName ? 'You: ' : `${edit.name}: `}{edit.text}, to:
           </p>
           <div className="w-[55%] flex flex-row items-center">
             <input
