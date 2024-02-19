@@ -15,11 +15,11 @@ const Users = ({id}) => {
     const chat = reqSnapshot.docs[0]
     const data = chat.data()
     setUsers(data.users)
-  },[])
+  },[id])
 
   useEffect(()=>{
     fetchData()
-  }, [])
+  }, [fetchData])
   return (
     <div className='w-[20%] mt-[6%] h-[85%] bg-gray-950 border-8 border-gray-800 text-xl p-4 flex flex-col overflow-auto'>
       <h1 className='underline text-xl text-left'>Users</h1>
