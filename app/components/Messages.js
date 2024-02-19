@@ -44,7 +44,7 @@ const Messages = ({ chat, path = "messages" }) => {
 
   const confirmEdit = () => {
     const messageRef = ref(rl, `${path}/${chat}/${edit.msgId}`);
-    update(messageRef, { text: editMsg });
+    update(messageRef, { text: editMsg, edited: true });
 
     setEdit(null);
     setEditMsg("");
@@ -74,7 +74,7 @@ const Messages = ({ chat, path = "messages" }) => {
           >
             {message.replying ? (
               <div className="text-xs absolute top-1 right-[20%]">
-                Replying To: {message.replying}
+                Replying To: {message?.replying.includes(user.fullName) ? `You: ${message.replying.split(':')[1]}`: message.replying}
               </div>
             ) : (
               <></>
@@ -83,6 +83,7 @@ const Messages = ({ chat, path = "messages" }) => {
               {message.name === user?.fullName ? "You" : message.name}:{" "}
             </Link>
             <p className="ml-2">{message.text}</p>
+            <p className="ml-2 text-xs mt-auto mb-2">{message.edited ? '\u0022edited\u0022' : ''}</p>
             {user?.id == message.id ? (
               <Button
                 style="xs"
@@ -164,7 +165,7 @@ const Messages = ({ chat, path = "messages" }) => {
       )}
       {reply ? (
         <div className="overflow-auto w-[80%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
-          <p className="ml-4">Replying to: {reply}</p>{" "}
+          <p className="ml-4">Replying to: {reply.includes(user.fullName) ? `You: ${reply.split(':')[1]}`: reply}</p>{" "}
           <Button
             style="none"
             extraStyles="text-xs ml-auto mr-5"
