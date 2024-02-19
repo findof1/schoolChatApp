@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import { addDoc, collection } from "firebase/firestore";
@@ -15,11 +15,17 @@ const AddUser = ({chatId}) => {
   const [email, setEmail] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [created, setCreated] = useState(false);
+
+  useEffect(()=>{
+    setEmail(sessionStorage.getItem('AddUserEmail'));
+  }, [])
+
   const handleCreate = async () => {
     if (!created) {
       if (email !== "") {
         if (email != user.emailAddresses[0].emailAddress) {
           setCreated(true);
+          sessionStorage.removeItem('AddUserEmail')
           addDoc(collection(db, "requests"), {
             name: name,
             user: email,
@@ -47,7 +53,7 @@ const AddUser = ({chatId}) => {
         label="Enter the email of the user you wish to chat with: "
         value={email}
         onChange={(e) => {
-          setEmail(e.target.value);
+          setEmail(e.target.value); sessionStorage.setItem('AddUserEmail', e.target.value);
         }}
       ></TextInput>
       <Button extraStyles="fade-in-4 mt-14" onClick={handleCreate}>

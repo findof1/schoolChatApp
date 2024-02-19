@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import { addDoc, collection } from "firebase/firestore";
@@ -14,6 +14,11 @@ const CreateChatReq = () => {
   const [email, setEmail] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [created, setCreated] = useState(false);
+
+  useEffect(()=>{
+    setName(sessionStorage.getItem('reqNameState'))
+    setEmail(sessionStorage.getItem('reqEmailState'))
+  }, [])
 
   const handleCreate = async () => {
     if (!created) {
@@ -47,6 +52,7 @@ const CreateChatReq = () => {
         value={name}
         onChange={(e) => {
           setName(e.target.value);
+          sessionStorage.setItem('reqNameState', e.target.value);
         }}
       ></TextInput>
       <TextInput
@@ -55,6 +61,7 @@ const CreateChatReq = () => {
         value={email}
         onChange={(e) => {
           setEmail(e.target.value);
+          sessionStorage.setItem('reqEmailState', e.target.value);
         }}
       ></TextInput>
       <Button extraStyles="fade-in-4 mt-14" onClick={handleCreate}>
