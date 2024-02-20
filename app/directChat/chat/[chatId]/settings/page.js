@@ -1,3 +1,4 @@
+import Button from "@/app/components/Button";
 import ChangeName from "@/app/components/ChangeName";
 import LeaveChat from "@/app/components/LeaveChat";
 import NavbarAuth from "@/app/components/NavbarAuth";
