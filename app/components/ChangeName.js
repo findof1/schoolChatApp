@@ -47,7 +47,9 @@ const ChangeName = ({chatId}) => {
         label={`Enter a new name for ${name}: `}
         value={changeName}
         onChange={(e) => {
+          if(e.target.value.length < 20){
           setChangeName(e.target.value); sessionStorage.setItem('changeNameState', e.target.value);
+          }
         }}
       ></TextInput>
       <Button extraStyles="fade-in-4 mt-10" onClick={handleChange}>
