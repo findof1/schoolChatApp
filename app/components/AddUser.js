@@ -34,7 +34,7 @@ const AddUser = ({chatId}) => {
             created: true,
             chatId: chatId
           });
-          router.push(`/directChat/chat/${chatId}`);
+          router.push(`/directChat/chat/${chatId}?name=${name}`);
         } else {
           setErrMsg("You cannot send a request to yourself");
         }

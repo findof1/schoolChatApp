@@ -1,16 +1,17 @@
 "use client";
 import { useUser } from "@clerk/clerk-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ref, onValue, push, remove, update } from "firebase/database";
-import { rl } from "../firebase-config";
+import { db, rl } from "../firebase-config";
 import Button from "./Button";
 import Link from "next/link";
 import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Name from "./Name";
+import { collection, documentId, getDocs, query, where } from "firebase/firestore";
 
-const Messages = ({ chat, path = "messages" }) => {
+const Messages = ({ chatId = 'no id', chat, path = "messages" }) => {
   const { user } = useUser();
   const [msgs, setMsgs] = useState([]);
   const [reply, setReply] = useState(null);
@@ -37,25 +38,63 @@ const Messages = ({ chat, path = "messages" }) => {
     }
   }, []);
 
+  const validateUser = useCallback( async()=>{
+
+    const q = query(collection(db, 'chats'), where(documentId(), '==', chatId), where('users', 'array-contains', user.emailAddresses[0].emailAddress))
+
+    const doc = await getDocs(q)
+    return !doc.empty
+  
+  }, [user, chatId])
+
   useEffect(() => {
-    const messagesRef = ref(rl, `${path}/${chat}`);
-    onValue(
-      messagesRef,
-      (snapshot) => {
-        const messages = snapshot.val();
-        if (messages) {
-          const messagesArray = Object.keys(messages).map((key) => {
-            return { msgId: key, ...messages[key] };
-          });
-          messagesArray.reverse();
-          setMsgs(messagesArray);
-        }
-      },
-      {
-        onlyOnce: false,
+    if(chatId != 'no id'){
+    if(chatId && user){
+    const validateAndSetMessages = async () => {
+      const isValidUser = await validateUser();
+      if (isValidUser) {
+        const messagesRef = ref(rl, `${path}/${chat}`);
+        onValue(
+          messagesRef,
+          (snapshot) => {
+            const messages = snapshot.val();
+            if (messages) {
+              const messagesArray = Object.keys(messages).map((key) => {
+                return { msgId: key, ...messages[key] };
+              });
+              messagesArray.reverse();
+              setMsgs(messagesArray);
+            }
+          },
+          {
+            onlyOnce: false,
+          }
+        );
       }
-    );
-  }, [setMsgs, chat, path]);
+    };
+
+    validateAndSetMessages();
+  }
+}else{
+  const messagesRef = ref(rl, `${path}/${chat}`);
+  onValue(
+    messagesRef,
+    (snapshot) => {
+      const messages = snapshot.val();
+      if (messages) {
+        const messagesArray = Object.keys(messages).map((key) => {
+          return { msgId: key, ...messages[key] };
+        });
+        messagesArray.reverse();
+        setMsgs(messagesArray);
+      }
+    },
+    {
+      onlyOnce: false,
+    }
+  );
+}
+  }, [setMsgs, chat, path, validateUser, chatId, user]);
 
   const deleteMessage = (msgId) => {
     setEdit(null);

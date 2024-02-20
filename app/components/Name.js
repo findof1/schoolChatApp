@@ -15,6 +15,12 @@ const Name = ({chatId}) => {
       md:h-12 md:text-lg md:w-54 md:right-[8%] md:top-[11%]
       lg:h-14 lg:text-xl lg:w-56 lg:right-[10%] lg:top-[11%]`}
      route={`/directChat/chat/${chatId}/add?name=${name}`}>Add User To Chat</Button> : <></>}
+        {name? <Button extraStyles={`fade-in-1 absolute
+     h-10 text-xs w-42 left-[0%] top-[10%]
+      sm:h-10 sm:text-md sm:w-42 sm:left-[1%] sm:top-[11%]
+      md:h-12 md:text-lg md:w-54 md:left-[2%] md:top-[11%]
+      lg:h-14 lg:text-xl lg:w-56 lg:left-[3%] lg:top-[11%]`}
+     route={`/directChat/chat/${chatId}/settings?name=${name}`}>Chat Settings</Button> : <></>}
     </>
   )
 }
