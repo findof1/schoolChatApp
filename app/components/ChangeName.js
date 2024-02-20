@@ -56,7 +56,7 @@ const ChangeName = ({chatId}) => {
         Change Name
       </Button>
       <p className="mt-2">{errMsg}</p>
-      <Button extraStyles="mt-4" route={`/directChat/chat/${params.chatId}?name=${name}`}>Back</Button>
+      <Button extraStyles="mt-4" route={`/directChat/chat/${chatId}?name=${name}`}>Back</Button>
     </div>
   );
 };
