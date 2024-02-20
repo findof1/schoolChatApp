@@ -51,8 +51,10 @@ const CreateChatReq = () => {
         label="Enter a name for the Chat: "
         value={name}
         onChange={(e) => {
+          if(e.target.value.length < 20){
           setName(e.target.value);
           sessionStorage.setItem('reqNameState', e.target.value);
+          }
         }}
       ></TextInput>
       <TextInput

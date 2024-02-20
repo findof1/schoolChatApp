@@ -171,8 +171,11 @@ const Messages = ({ chat, path = "messages" }) => {
             <input
               value={editMsg}
               onChange={(e) => {
+                const newMsg = e.target.value
+                if(newMsg.length < 70){
                 setEditMsg(e.target.value);
                 sessionStorage.setItem('editMsgState', e.target.value);
+                }
               }}
               className="border-4 border-black bg-gray-800 min-w-[100%] text-white rounded-3xl min-h-5 h-10 p-2 pl-3 text-2xl"
             ></input>
@@ -226,7 +229,7 @@ const Messages = ({ chat, path = "messages" }) => {
             value={msg}
             onChange={(e) => {
               const newMsg = e.target.value
-              if(newMsg.length < 80){
+              if(newMsg.length < 70){
               setMsg(e.target.value);
               sessionStorage.setItem('msgState', e.target.value);
               }
