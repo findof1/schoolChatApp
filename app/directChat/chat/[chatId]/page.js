@@ -4,7 +4,7 @@ import Users from "@/app/components/Users";
 
 
 
-export default function Home({params}) {
+export default function Home({chatId}) {
 
 
   return (
@@ -13,8 +13,8 @@ export default function Home({params}) {
     <div className="flex flex-col items-center text-white h-[90%] w-full">
       
       <div className="flex flex-row h-full w-full">
-      <Messages chat={params.chatId} chatId={params.chatId} path="direct"></Messages>
-      <Users id={params.chatId}/>
+      <Messages chat={chatId} chatId={chatId} path="direct"></Messages>
+      <Users id={chatId}/>
       </div>
     </div>
     </>

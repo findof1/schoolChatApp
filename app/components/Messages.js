@@ -136,7 +136,7 @@ const Messages = ({ chatId = 'no id', chat, path = "messages" }) => {
 
   return (
     <div className="flex flex-col w-[90%] h-full ml-[2.5%]">
-      <Name chatId={chat}/>
+      <Name chatId={chatId}/>
       <div className="overflow-auto w-[95%] h-[80%] mt-[1%] bg-gray-950 border-8 border-gray-800 text-xl p-4">
         {msgs.map((message, index) => (
           <div
