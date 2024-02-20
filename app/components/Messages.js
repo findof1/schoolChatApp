@@ -170,6 +170,19 @@ const Messages = ({ chat, path = "messages" }) => {
           <div className="w-[55%] flex flex-row items-center">
             <input
               value={editMsg}
+              onKeyDown={
+                (e)=>{
+                  if(e.key == 'Enter'){
+                    confirmEdit()
+                  }
+                  if(e.key == "Escape"){
+                    setEdit(null);
+                    sessionStorage.setItem('editState', JSON.stringify(null));
+                    setEditMsg("");
+                    sessionStorage.setItem('editMsgState', "");
+                  }
+                }
+              }
               onChange={(e) => {
                 const newMsg = e.target.value
                 if(newMsg.length < 70){
@@ -227,6 +240,13 @@ const Messages = ({ chat, path = "messages" }) => {
           <label>Send A Message: </label>
           <input
             value={msg}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                sendMessage();
+                setMsg("");
+                sessionStorage.setItem('msgState', "");
+              }
+            }}
             onChange={(e) => {
               const newMsg = e.target.value
               if(newMsg.length < 70){
