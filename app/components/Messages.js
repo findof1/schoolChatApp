@@ -58,6 +58,12 @@ const Messages = ({ chat, path = "messages" }) => {
   }, [setMsgs, chat, path]);
 
   const deleteMessage = (msgId) => {
+    setEdit(null);
+    sessionStorage.setItem('editState', JSON.stringify(null))
+    setEditMsg("");
+    sessionStorage.setItem('editMsgState', "")
+    setReply(null);
+    sessionStorage.setItem('replyState', null)
     const messageRef = ref(rl, `${path}/${chat}/${msgId}`);
     remove(messageRef);
   };
@@ -73,7 +79,7 @@ const Messages = ({ chat, path = "messages" }) => {
   };
 
   function sendMessage() {
-    if (msg) {
+    if (msg && msg.length < 80) {
       push(ref(rl, `${path}/${chat}`), {
         name: user.fullName,
         id: user.id,
@@ -157,7 +163,7 @@ const Messages = ({ chat, path = "messages" }) => {
         ))}
       </div>
       {edit ? (
-        <div className="overflow-auto w-[95%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[95%] h-[15%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
           <p className="ml-4">
             Changing: {edit.name == user?.fullName ? 'You: ' : `${edit.name}: `}{edit.text}, to:
           </p>
@@ -168,7 +174,7 @@ const Messages = ({ chat, path = "messages" }) => {
                 setEditMsg(e.target.value);
                 sessionStorage.setItem('editMsgState', e.target.value);
               }}
-              className="border-4 border-black bg-gray-800 min-w-[100%] text-white rounded-3xl min-h-5 p-2 pl-3 text-2xl"
+              className="border-4 border-black bg-gray-800 min-w-[100%] text-white rounded-3xl min-h-5 h-10 p-2 pl-3 text-2xl"
             ></input>
           </div>
           <Button
@@ -197,7 +203,7 @@ const Messages = ({ chat, path = "messages" }) => {
         <></>
       )}
       {reply ? (
-        <div className="overflow-auto w-[95%] h-[5%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
+        <div className="overflow-auto w-[95%] h-[13%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl">
           <p className="ml-4">Replying to: {reply.includes(user?.fullName) ? `You: ${reply.split(':')[1]}`: reply}</p>{" "}
           <Button
             style="none"
@@ -213,20 +219,22 @@ const Messages = ({ chat, path = "messages" }) => {
       ) : (
         <></>
       )}
-      <div className="overflow-auto w-[95%] h-[10%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl ">
+      <div className="overflow-auto w-[95%] h-[15%] flex flex-row items-center bg-gray-950 border-l-8 border-r-8 border-b-8 border-gray-800 text-xl ">
         <div className="w-[85%] ml-[2%] flex flex-row items-center">
           <label>Send A Message: </label>
           <input
             value={msg}
             onChange={(e) => {
+              if(msg.length < 80){
               setMsg(e.target.value);
               sessionStorage.setItem('msgState', e.target.value);
+              }
             }}
             className="border-4 border-black bg-gray-800 min-w-[80%] text-white rounded-3xl min-h-5 h-10 p-2 pl-3 text-2xl ml-2"
           ></input>
         </div>
         <Button
-        extraStyles='h-10 pt-0 pl-0 pr-0 hover:scale-100 text-md text-center items-center'
+        extraStyles='h-10 pt-0 pb-0 pl-0 pr-0 hover:scale-90 text-md text-center items-center'
           onClick={() => {
             sendMessage();
             setMsg("");
