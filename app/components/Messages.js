@@ -225,7 +225,8 @@ const Messages = ({ chat, path = "messages" }) => {
           <input
             value={msg}
             onChange={(e) => {
-              if(msg.length < 80){
+              const newMsg = e.target.value
+              if(newMsg.length < 80){
               setMsg(e.target.value);
               sessionStorage.setItem('msgState', e.target.value);
               }
