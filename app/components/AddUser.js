@@ -22,7 +22,7 @@ const AddUser = ({chatId}) => {
 
   const handleCreate = async () => {
     if (!created) {
-      if (email !== "") {
+      if (email !== "" && email) {
         if (email != user.emailAddresses[0].emailAddress) {
           setCreated(true);
           sessionStorage.removeItem('AddUserEmail')

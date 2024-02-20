@@ -19,6 +19,7 @@ import Button from "./Button";
 import { useRouter } from "next/navigation";
 
 const ChatRequests = () => {
+  const router = useRouter()
   const { user } = useUser();
   const [chatReqs, setChatReqs] = useState([]);
 
@@ -53,7 +54,7 @@ const ChatRequests = () => {
         users: arrayUnion(req.user),
       });
     }
-
+      window.location.reload();
       setChatReqs((prev) => prev.filter((r) => r.id !== req.id));
     } catch (error) {
       console.error("Error accepting chat request: ", error);

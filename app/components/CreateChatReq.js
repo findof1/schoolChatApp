@@ -22,7 +22,7 @@ const CreateChatReq = () => {
 
   const handleCreate = async () => {
     if (!created) {
-      if (name !== "" && email !== "") {
+      if (name !== "" && email !== "" && name && email) {
         if (email != user.emailAddresses[0].emailAddress) {
           setCreated(true);
           addDoc(collection(db, "requests"), {
@@ -70,6 +70,7 @@ const CreateChatReq = () => {
         Send Request
       </Button>
       <p className="mt-2">{errMsg}</p>
+      <p className="mt-2 fade-in-5">Note: You can add more users to a chat later.</p>
     </div>
   );
 };
