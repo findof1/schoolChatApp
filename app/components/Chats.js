@@ -46,9 +46,9 @@ const Chats = () => {
             className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row items-center fade-in-1"
           >
             <p className="text-2xl">
-              {(user.emailAddresses[0].emailAddress === 'engleluc@rockfordschools.org' || user.emailAddresses[0].emailAddress === 'lucasengle071409@gmail.com') && chat.users.includes(user.emailAddresses[0].emailAddress)
-                ? 'Admin Access'
-                : 'Chat'}: {chat.name}
+              {chat.users.includes(user.emailAddresses[0].emailAddress)
+                ? 'Chat'
+                : 'Admin Access'}: {chat.name}
             </p>
             <Button
               style="submit"
