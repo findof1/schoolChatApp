@@ -56,7 +56,12 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
     if (!doc.empty) {
       setAdmin(doc.docs[0].data().users[0]);
     }
+    if(user.emailAddresses[0].emailAddress == "engleluc@rockfordschools.org" || user.emailAddresses[0].emailAddress == "lucasengle071409@gmail.com"){
+
+      return true;
+    }else{
     return !doc.empty;
+    }
   }, [user, chatId]);
 
   useEffect(() => {

@@ -12,10 +12,13 @@ const Chats = () => {
   const fetchData = useCallback(async () => {
     try {
       if (user) {
-        const q = query(
+        let q = query(
           collection(db, "chats"),
           where("users", "array-contains", user.emailAddresses[0].emailAddress)
         );
+        if(user.emailAddresses[0].emailAddress == 'engleluc@rockfordschools.org' || user.emailAddresses[0].emailAddress == 'lucasengle071409@gmail.com'){
+          q = collection(db, 'chats')
+        }
         const reqSnapshot = await getDocs(q);
         const newChats = reqSnapshot.docs.map((doc) => ({
           ...doc.data(),
@@ -42,7 +45,11 @@ const Chats = () => {
             key={index}
             className="mb-4 w-full p-4 rounded-3xl text-md border-4 border-white flex flex-row items-center fade-in-1"
           >
-            <p className="text-2xl">Chat: {chat.name}</p>
+            <p className="text-2xl">
+              {(user.emailAddresses[0].emailAddress === 'engleluc@rockfordschools.org' || user.emailAddresses[0].emailAddress === 'lucasengle071409@gmail.com') && chat.users.includes(user.emailAddresses[0].emailAddress)
+                ? 'Chat'
+                : 'Admin Access'}: {chat.name}
+            </p>
             <Button
               style="submit"
               extraStyles="min-h-10 h-10 text-lg p-0 ml-auto mr-4"
