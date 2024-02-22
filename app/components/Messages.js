@@ -142,6 +142,7 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
         email: user.emailAddresses[0].emailAddress,
         text: msg,
         replying: reply,
+        date: new Date().toISOString()
       });
     }
     setMsg("");
@@ -164,6 +165,46 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
     }
   };
 
+  function timeSince(dateString) {
+    const date = new Date(dateString);
+    var seconds = Math.floor((new Date() - date) /  1000);
+    var intervalType;
+
+    var interval = Math.floor(seconds /  31536000);
+    if (interval >=  1) {
+        intervalType = 'year';
+    } else {
+        interval = Math.floor(seconds /  2592000);
+        if (interval >=  1) {
+            intervalType = 'month';
+        } else {
+            interval = Math.floor(seconds /  86400);
+            if (interval >=  1) {
+                intervalType = 'day';
+            } else {
+                interval = Math.floor(seconds /  3600);
+                if (interval >=  1) {
+                    intervalType = "hour";
+                } else {
+                    interval = Math.floor(seconds /  60);
+                    if (interval >=  1) {
+                        intervalType = "minute";
+                    } else {
+                        interval = seconds;
+                        intervalType = "second";
+                    }
+                }
+            }
+        }
+    }
+
+    if (interval >  1 || interval ===  0) {
+        intervalType += 's';
+    }
+
+    return interval + ' ' + intervalType + ' ago';
+}
+
   return (
     <div className="flex flex-col w-[77%] h-full ml-[2.5%]">
       <Name chatId={chat} />
@@ -171,7 +212,7 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
         {msgs.map((message, index) => (
           <div
             key={index}
-            className=" fade-in-1 mb-4 ml-2 w-[97%] h-[20%] flex flex-row items-center pl-2 border-4 border-gray-700 rounded-full relative"
+            className="mb-4 ml-2 w-[97%] h-[20%] flex flex-row items-center pl-2 border-4 border-gray-700 rounded-full relative"
           >
             {message.replying ? (
               <div className="text-xs absolute top-1 right-[20%]">
@@ -194,6 +235,7 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
             >
               {message.name === user?.fullName ? "You" : message.name}:{" "}
             </Link>
+            {message.date ? <p className='absolute bottom-1 left-4 text-[9px]'>{timeSince(message.date)}</p> : <></>}
             {message.text.length < 70 ? (
               <p className="ml-2">{message.text}</p>
             ) : (
