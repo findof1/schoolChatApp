@@ -21,7 +21,7 @@ const Users = ({id}) => {
     const chat = reqSnapshot.docs[0]
     const data = chat.data()
     setUsers(data.users)
-  },[id])
+  },[id, setUsers])
 
   useEffect(()=>{
     fetchData()
@@ -59,7 +59,7 @@ const Users = ({id}) => {
       off(chatConnRef, 'value', handleConnectedUsersChange);
     };
   }
-  }, [user]);
+  }, [user, id, setOnline]);
 
 
   return (

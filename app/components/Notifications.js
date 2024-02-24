@@ -91,8 +91,8 @@ const Notifications = () => {
             </p>{" "}
             <p className='ml-10'>{timeSince(notification.date)}</p>
           </div>
-          <p className="text-sm line-clamp-1 overflow-hidden overflow-ellipsis">
-            Message: {notification.text}
+          <p className="text-sm line-clamp-1 overflow-hidden overflow-ellipsis max-w-[35%]">
+            Message: {notification.text.length > 25 ? notification.text.substring(0,25) + '...': notification.text}
           </p>
         </div>
       ))}
