@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/clerk-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { ref, onValue, push, remove, update } from "firebase/database";
 import { db, rl } from "../firebase-config";
 import Button from "./Button";
@@ -16,6 +16,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { OnlineUsersContext } from "./OnlineUsersContext";
+import { UsersContext } from "./UsersProvider";
+import { useSearchParams } from "next/navigation";
 
 const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
   const { user } = useUser();
@@ -25,6 +28,10 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
   const [edit, setEdit] = useState(null);
   const [editMsg, setEditMsg] = useState("");
   const [msg, setMsg] = useState("");
+  const { online, setOnline } = useContext(OnlineUsersContext);
+  const { users, setUsers } = useContext(UsersContext);
+  const search = useSearchParams();
+  const name = search.get("name");
 
   useEffect(() => {
     const replyState = sessionStorage.getItem("replyState");
@@ -56,11 +63,13 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
     if (!doc.empty) {
       setAdmin(doc.docs[0].data().users[0]);
     }
-    if(user.emailAddresses[0].emailAddress == "engleluc@rockfordschools.org" || user.emailAddresses[0].emailAddress == "lucasengle071409@gmail.com"){
-
+    if (
+      user.emailAddresses[0].emailAddress == "engleluc@rockfordschools.org" ||
+      user.emailAddresses[0].emailAddress == "lucasengle071409@gmail.com"
+    ) {
       return true;
-    }else{
-    return !doc.empty;
+    } else {
+      return !doc.empty;
     }
   }, [user, chatId]);
 
@@ -142,8 +151,22 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
         email: user.emailAddresses[0].emailAddress,
         text: msg,
         replying: reply,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       });
+      if (chatId != "no id") {
+        for (let i = 0; i < users.length; i++) {
+          if (!online.includes(users[i])) {
+            push(ref(rl, `notifications/${users[i].replace(/\./g, '_')}`), {
+              text: msg,
+              from: user.fullName,
+              chatName: name,
+              chatId: chatId,
+              fromEmail: user.emailAddresses[0].emailAddress,
+              date: new Date().toISOString()
+            });
+          }
+        }
+      }
     }
     setMsg("");
 
@@ -167,43 +190,43 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
 
   function timeSince(dateString) {
     const date = new Date(dateString);
-    var seconds = Math.floor((new Date() - date) /  1000);
+    var seconds = Math.floor((new Date() - date) / 1000);
     var intervalType;
 
-    var interval = Math.floor(seconds /  31536000);
-    if (interval >=  1) {
-        intervalType = 'year';
+    var interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) {
+      intervalType = "year";
     } else {
-        interval = Math.floor(seconds /  2592000);
-        if (interval >=  1) {
-            intervalType = 'month';
+      interval = Math.floor(seconds / 2592000);
+      if (interval >= 1) {
+        intervalType = "month";
+      } else {
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+          intervalType = "day";
         } else {
-            interval = Math.floor(seconds /  86400);
-            if (interval >=  1) {
-                intervalType = 'day';
+          interval = Math.floor(seconds / 3600);
+          if (interval >= 1) {
+            intervalType = "hour";
+          } else {
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) {
+              intervalType = "minute";
             } else {
-                interval = Math.floor(seconds /  3600);
-                if (interval >=  1) {
-                    intervalType = "hour";
-                } else {
-                    interval = Math.floor(seconds /  60);
-                    if (interval >=  1) {
-                        intervalType = "minute";
-                    } else {
-                        interval = seconds;
-                        intervalType = "second";
-                    }
-                }
+              interval = seconds;
+              intervalType = "second";
             }
+          }
         }
+      }
     }
 
-    if (interval >  1 || interval ===  0) {
-        intervalType += 's';
+    if (interval > 1 || interval === 0) {
+      intervalType += "s";
     }
 
-    return interval + ' ' + intervalType + ' ago';
-}
+    return interval + " " + intervalType + " ago";
+  }
 
   return (
     <div className="flex flex-col w-[77%] h-full ml-[2.5%]">
@@ -235,7 +258,13 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
             >
               {message.name === user?.fullName ? "You" : message.name}:{" "}
             </Link>
-            {message.date ? <p className='absolute bottom-1 left-4 text-[9px]'>{timeSince(message.date)}</p> : <></>}
+            {message.date ? (
+              <p className="absolute bottom-1 left-4 text-[9px]">
+                {timeSince(message.date)}
+              </p>
+            ) : (
+              <></>
+            )}
             {message.text.length < 70 ? (
               <p className="ml-2">{message.text}</p>
             ) : (

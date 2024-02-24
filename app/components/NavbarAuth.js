@@ -1,22 +1,17 @@
 import React from 'react'
 import Navbar from './Navbar'
-import Dropdown from './Dropdown'
 import { UserButton } from "@clerk/nextjs";
+import Button from './Button';
+import { IoIosNotifications } from "react-icons/io";
+
 
 const NavbarAuth = ({userdata}) => {
   return (
     <Navbar homeRedirect={!userdata ? '/' : '/home'}>
-    {userdata ? (
-      <>
-        <p className="text-2xl mr-5">{userdata.username}</p>
-        <Dropdown extraStyles="self-align mt-2">
-          <p>Settings</p>
-          <p>Log Out</p>
-        </Dropdown>
-      </>
-    ) : (
+      <Button style='square' extraStyles='mr-5 flex items-center' route='/notifications'>
+        <IoIosNotifications className='w-10 h-10 justify-center self-center' />
+      </Button>
       <UserButton afterSignOutUrl="/"/>
-    )}
   </Navbar>
   )
 }

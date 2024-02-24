@@ -1,14 +1,16 @@
 'use client'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useContext } from 'react'
 import { db, rl } from '../firebase-config';
 import { collection, documentId, getDocs, query, where } from 'firebase/firestore';
-import { off, onDisconnect, onValue, ref, remove, set } from 'firebase/database';
+import { off, onDisconnect, onValue, ref, set } from 'firebase/database';
 import { useUser } from "@clerk/clerk-react";
+import { OnlineUsersContext } from './OnlineUsersContext';
+import { UsersContext } from './UsersProvider';
 
 const Users = ({id}) => {
   const {user} = useUser()
-  const [users, setUsers] = useState([])
-  const [online, setOnline] = useState([])
+  const {users, setUsers} = useContext(UsersContext);
+  const { online, setOnline } = useContext(OnlineUsersContext);
 
   const fetchData = useCallback(async()=>{
     const q = query(
