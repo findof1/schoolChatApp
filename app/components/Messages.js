@@ -162,7 +162,8 @@ const Messages = ({ chatId = "no id", chat, path = "messages" }) => {
               chatName: name,
               chatId: chatId,
               fromEmail: user.emailAddresses[0].emailAddress,
-              date: new Date().toISOString()
+              date: new Date().toISOString(),
+              type: 'message'
             });
           }
         }

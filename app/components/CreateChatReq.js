@@ -4,8 +4,9 @@ import TextInput from "./TextInput";
 import Button from "./Button";
 import { addDoc, collection } from "firebase/firestore";
 import { useUser } from "@clerk/clerk-react";
-import { db } from "../firebase-config";
+import { db, rl } from "../firebase-config";
 import { useRouter } from "next/navigation";
+import { push, ref } from "firebase/database";
 
 const CreateChatReq = () => {
   const { user } = useUser();
@@ -31,6 +32,12 @@ const CreateChatReq = () => {
             senderName: user.fullName,
             senderEmail: user.emailAddresses[0].emailAddress,
             created: false
+          });
+          push(ref(rl, `notifications/${email.replace(/\./g, '_')}`), {
+            from: user.fullName,
+            fromEmail: user.emailAddresses[0].emailAddress,
+            date: new Date().toISOString(),
+            type: 'request'
           });
           router.push("/directChat");
         } else {
