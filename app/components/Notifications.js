@@ -138,7 +138,7 @@ const Notifications = () => {
           </Link> sent you a Chat Request
         </p>{" "}
         <p className='ml-10'>{timeSince(notification.date)}</p>
-        <Link href='/directChats' className='text-blue-600 underline ml-10'>Check It Out</Link>
+        <Link href='/directChat' className='text-blue-600 underline ml-10'>Check It Out</Link>
       </div>
       <div className='flex flex-row items-center'>
       <Button onClick={()=>{deleteNotif(notification)}} style="square" extraStyles="min-w-8 w-8 h-8 min-h-8 ml-5 flex flex-col items-center">
